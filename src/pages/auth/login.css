@@ -1,0 +1,302 @@
+
+.login-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* LEFT */
+
+.login-left {
+  width: 50%;
+  background: #173f35;
+  color: #fff;
+  padding: 45px 9% 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.brand-icon {
+  background: #d88d59;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.intro {
+  margin-top: 100px;
+}
+
+.eyebrow,
+.form-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.intro h1 {
+  font-size: clamp(30px, 3.2vw, 48px);
+  line-height: 1.3;
+  margin: 25px 0;
+}
+
+.intro-description {
+  color: #d0dfd8;
+  line-height: 1.8;
+  max-width: 400px;
+}
+
+.coffee-illustration {
+  margin: auto auto 35px;
+  width: 230px;
+  height: 200px;
+  background: #235c4b;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 100px;
+  position: relative;
+}
+
+.coffee-illustration span {
+  position: absolute;
+  right: 5px;
+  top: 25px;
+  background: #d88d59;
+  padding: 12px;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+.left-footer {
+  color: #d0dfd8;
+  font-size: 13px;
+}
+
+/* RIGHT */
+
+.login-right {
+  width: 50%;
+  background: #f8f8f3;
+  padding: 35px 8%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.language {
+  text-align: right;
+  color: #777;
+  font-size: 14px;
+}
+
+.login-form-wrapper {
+  width: 100%;
+  max-width: 440px;
+  margin: auto;
+}
+
+.form-eyebrow {
+  color: #235c4b;
+}
+
+.login-form-wrapper h2 {
+  font-size: 34px;
+  color: #203e35;
+  margin: 12px 0;
+}
+
+.form-description {
+  color: #888;
+  margin-bottom: 30px;
+}
+
+/* ROLE */
+
+.role-selection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.role-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  color: #555;
+  transition: 0.2s;
+}
+
+.role-button.active {
+  border: 2px solid #205747;
+  background: #edf4ef;
+  color: #205747;
+}
+
+.role-button > span {
+  font-size: 25px;
+}
+
+.role-button strong,
+.role-button small {
+  display: block;
+}
+
+.role-button small {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* FORM */
+
+.login-form-wrapper form > label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 9px;
+  color: #34483f;
+}
+
+.login-form-wrapper form > input,
+.password-wrapper input {
+  width: 100%;
+  height: 52px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  padding: 0 15px;
+  background: white;
+  outline: none;
+  margin-bottom: 24px;
+}
+
+.login-form-wrapper input:focus {
+  border-color: #205747;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 65px;
+}
+
+.show-password {
+  position: absolute;
+  right: 12px;
+  top: 15px;
+  background: none;
+  border: none;
+  color: #205747;
+  cursor: pointer;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.forgot-password {
+  background: none;
+  border: none;
+  color: #205747;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-button {
+  width: 100%;
+  height: 54px;
+  border: none;
+  border-radius: 9px;
+  background: #205747;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.login-button:hover {
+  background: #173f35;
+}
+
+.security-note {
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  margin-top: 25px;
+}
+
+.contact {
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  line-height: 2;
+  margin-top: 30px;
+}
+
+.contact strong {
+  color: #205747;
+}
+
+.right-footer {
+  display: flex;
+  justify-content: space-between;
+  color: #888;
+  font-size: 12px;
+  margin-top: 40px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+  .login-left {
+    display: none;
+  }
+
+  .login-right {
+    width: 100%;
+    min-height: 100vh;
+    padding: 30px 7%;
+  }
+
+  .login-form-wrapper {
+    margin: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .role-selection {
+    grid-template-columns: 1fr;
+  }
+
+  .form-options {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+}
