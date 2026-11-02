@@ -1,4 +1,4 @@
-import { users } from "../../data/users";
+import { getUsers } from "../../data/users";
 import { useState } from "react";
 import "./Login.css";
 
@@ -17,7 +17,7 @@ const handleLogin = (e) => {
     return;
   }
 
-  const user = users.find((u) => {
+  const user = getUsers().find((u) => {
     const account = username.trim().toLowerCase();
 
     const accountMatches =

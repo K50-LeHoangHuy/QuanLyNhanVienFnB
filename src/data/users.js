@@ -1,5 +1,5 @@
 
-export const users = [
+const initialUsers = [
   {
     id: 1,
     name: "Quản trị viên",
@@ -24,3 +24,22 @@ export const users = [
     role: "employee",
   },
 ];
+
+// Lấy danh sách tài khoản
+export const getUsers = () => {
+  const savedUsers = localStorage.getItem("users");
+
+  if (savedUsers) {
+    return JSON.parse(savedUsers);
+  }
+
+  // Nếu chưa có dữ liệu thì sử dụng tài khoản mẫu
+  localStorage.setItem("users", JSON.stringify(initialUsers));
+
+  return initialUsers;
+};
+
+// Lưu danh sách tài khoản
+export const saveUsers = (users) => {
+  localStorage.setItem("users", JSON.stringify(users));
+};

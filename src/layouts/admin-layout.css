@@ -1,0 +1,282 @@
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f7f8f5;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  min-height: 100vh;
+  background: #243b2f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 18px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 32px;
+  border-bottom: 1px solid #405548;
+}
+
+.logo-icon {
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  background: #d8e3d5;
+  color: #243b2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-logo h2 {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.sidebar-logo span {
+  color: #b5c3b7;
+  font-size: 11px;
+}
+
+.sidebar-menu {
+  padding-top: 30px;
+  flex: 1;
+}
+
+.menu-heading {
+  color: #9aafa0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 0 10px;
+  margin-bottom: 15px;
+}
+
+.sidebar-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 12px;
+  margin-bottom: 6px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #c5d0c7;
+  font-family: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sidebar-item:hover {
+  background: #344e3e;
+  color: white;
+}
+
+.sidebar-item.active {
+  background: #dce7d9;
+  color: #243b2f;
+  font-weight: 600;
+}
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 8px 0;
+  border-top: 1px solid #405548;
+}
+
+.sidebar-footer-icon {
+  width: 36px;
+  height: 36px;
+  background: #405548;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-footer strong {
+  font-size: 13px;
+}
+
+.sidebar-footer p {
+  color: #aab9ad;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* MAIN CONTENT */
+
+.admin-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* HEADER */
+
+.admin-header {
+  height: 76px;
+  background: white;
+  border-bottom: 1px solid #e9ede8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 35px;
+}
+
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 300px;
+  padding: 10px 14px;
+  background: #f6f7f4;
+  border-radius: 9px;
+  color: #89938a;
+}
+
+.header-search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.notification-button {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #68766b;
+  cursor: pointer;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 7px;
+  height: 7px;
+  background: #d97757;
+  border-radius: 50%;
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.profile-avatar {
+  width: 38px;
+  height: 38px;
+  background: #dce7d9;
+  color: #243b2f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-info strong {
+  color: #34483a;
+  font-size: 13px;
+}
+
+.profile-info span {
+  color: #929a92;
+  font-size: 11px;
+}
+
+.logout-button {
+  border: none;
+  background: transparent;
+  color: #68766b;
+  cursor: pointer;
+}
+
+/* PAGE CONTENT */
+
+.admin-content {
+  padding: 32px 35px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 210px;
+    min-width: 210px;
+  }
+
+  .admin-header {
+    padding: 0 20px;
+  }
+
+  .admin-content {
+    padding: 25px 20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .sidebar {
+    width: 70px;
+    min-width: 70px;
+    padding: 20px 10px;
+  }
+
+  .sidebar-logo {
+    justify-content: center;
+    padding: 0 0 25px;
+  }
+
+  .sidebar-logo > div:last-child,
+  .menu-heading,
+  .sidebar-item span,
+  .sidebar-footer > div:last-child {
+    display: none;
+  }
+
+  .sidebar-item {
+    justify-content: center;
+    padding: 13px 0;
+  }
+
+  .sidebar-footer {
+    justify-content: center;
+  }
+
+  .header-search {
+    width: 150px;
+  }
+
+  .profile-info {
+    display: none;
+  }
+}

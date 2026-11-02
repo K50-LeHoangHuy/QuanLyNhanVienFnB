@@ -1,12 +1,17 @@
 
 import { useState } from "react";
 import Login from "./pages/auth/login";
+import Dashboard from "./pages/admin/dashboard";
+import Employees from "./pages/admin/employees";
+import AdminLayout from "./layouts/admin-layout";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [activePage, setActivePage] = useState("dashboard");
 
   const handleLogout = () => {
     setCurrentUser(null);
+    setActivePage("dashboard");
   };
 
   // Chưa đăng nhập
@@ -17,15 +22,20 @@ function App() {
   // Đăng nhập Admin
   if (currentUser.role === "admin") {
     return (
-      <div style={{ padding: "40px" }}>
-        <h1>Dashboard Admin</h1>
-        <h2>Xin chào, {currentUser.name}!</h2>
-        <p>Chào mừng đến với hệ thống F&B People.</p>
+      <AdminLayout
+        currentUser={currentUser}
+        onLogout={handleLogout}
+        activePage={activePage}
+        onNavigate={setActivePage}
+      >
+        {activePage === "dashboard" && (
+          <Dashboard currentUser={currentUser} />
+        )}
 
-        <button onClick={handleLogout}>
-          Đăng xuất
-        </button>
-      </div>
+        {activePage === "employees" && (
+          <Employees />
+        )}
+      </AdminLayout>
     );
   }
 
