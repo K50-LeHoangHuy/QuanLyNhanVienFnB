@@ -15,7 +15,7 @@ function Sidebar({ activePage, onNavigate }) {
   const menuItems = [
     { id: "dashboard", icon: LayoutDashboard, label: "Tổng quan" },
     { id: "employees", icon: Users, label: "Nhân viên" },
-    { id: "schedule", icon: CalendarDays, label: "Lịch làm việc" },
+    { id: "shifts", icon: CalendarDays, label: "Lịch làm việc" },
     { id: "attendance", icon: Clock, label: "Chấm công" },
     { id: "payroll", icon: Wallet, label: "Bảng lương" },
     { id: "requests", icon: ClipboardList, label: "Yêu cầu" },

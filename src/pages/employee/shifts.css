@@ -1,0 +1,367 @@
+
+.employee-shifts-page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  color: #263445;
+}
+
+.employee-shifts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.employee-shifts-header h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.employee-shifts-header p {
+  color: #7b8796;
+  font-size: 14px;
+}
+
+.employee-shifts-date {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 15px;
+  border: 1px solid #e8edf3;
+  border-radius: 9px;
+  background: white;
+  color: #64758a;
+  font-size: 13px;
+}
+
+.employee-shifts-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.employee-shifts-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #e8edf3;
+  border-radius: 12px;
+}
+
+.employee-shifts-summary-icon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.employee-shifts-summary-icon.blue {
+  color: #4384d1;
+  background: #eaf3ff;
+}
+
+.employee-shifts-summary-icon.green {
+  color: #279b70;
+  background: #e8f7f0;
+}
+
+.employee-shifts-summary-icon.orange {
+  color: #d88b36;
+  background: #fff3e5;
+}
+
+.employee-shifts-summary-card span {
+  display: block;
+  color: #788595;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.employee-shifts-summary-card strong {
+  font-size: 23px;
+}
+
+.employee-shifts-content {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.employee-calendar-panel,
+.employee-selected-day-panel {
+  background: white;
+  border: 1px solid #e8edf3;
+  border-radius: 12px;
+  padding: 22px;
+}
+
+.employee-calendar-heading,
+.employee-selected-day-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.employee-calendar-heading h2,
+.employee-selected-day-heading h2 {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+
+.employee-calendar-heading p,
+.employee-selected-day-heading p {
+  color: #8792a0;
+  font-size: 13px;
+}
+
+.employee-today-button {
+  padding: 8px 13px;
+  color: #4384d1;
+  background: #edf4ff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.employee-calendar-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 25px 0 18px;
+}
+
+.employee-calendar-navigation h3 {
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.employee-calendar-navigation button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e8edf3;
+  background: white;
+  border-radius: 8px;
+  color: #64758a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.employee-calendar-navigation button:hover {
+  background: #edf4ff;
+  color: #4384d1;
+}
+
+.employee-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.employee-calendar-weekday {
+  padding: 10px 0;
+  text-align: center;
+  color: #8792a0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.employee-calendar-empty {
+  min-height: 65px;
+}
+
+.employee-calendar-day {
+  min-height: 65px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: #f8fafc;
+  color: #354457;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.employee-calendar-day:hover {
+  background: #edf4ff;
+}
+
+.employee-calendar-day.selected {
+  background: #eaf3ff;
+  border-color: #6d9edb;
+  color: #3475c1;
+  font-weight: 700;
+}
+
+.employee-calendar-day.today {
+  border-color: #91b5e2;
+}
+
+.employee-calendar-dots {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.employee-calendar-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #4384d1;
+}
+
+.employee-calendar-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid #edf0f4;
+}
+
+.employee-calendar-legend span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #788595;
+  font-size: 12px;
+}
+
+.legend-dot,
+.legend-today {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #4384d1;
+}
+
+.legend-today {
+  background: white;
+  border: 2px solid #91b5e2;
+}
+
+.employee-selected-day-heading {
+  margin-bottom: 22px;
+  color: #5689c8;
+}
+
+.employee-selected-day-heading h2,
+.employee-selected-day-heading p {
+  color: #263445;
+}
+
+.employee-selected-shift-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.employee-selected-shift {
+  display: flex;
+  gap: 13px;
+  padding: 16px;
+  border-radius: 10px;
+  background: #f7f9fc;
+}
+
+.employee-selected-shift-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4384d1;
+  background: #eaf3ff;
+  border-radius: 10px;
+}
+
+.employee-selected-shift-info h3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.employee-selected-shift-info p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #68788c;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.employee-assignment-status {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  color: #27956c;
+  background: #e8f7f0;
+  font-size: 11px;
+}
+
+.employee-shifts-empty {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #a0aab6;
+  gap: 10px;
+}
+
+.employee-shifts-empty h3 {
+  color: #536174;
+  font-size: 15px;
+}
+
+.employee-shifts-empty p {
+  font-size: 13px;
+  max-width: 230px;
+  line-height: 1.5;
+}
+
+@media (max-width: 950px) {
+  .employee-shifts-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .employee-shifts-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .employee-shifts-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-calendar-panel,
+  .employee-selected-day-panel {
+    padding: 15px;
+  }
+
+  .employee-calendar-grid {
+    gap: 4px;
+  }
+
+  .employee-calendar-day {
+    min-height: 52px;
+  }
+
+  .employee-calendar-empty {
+    min-height: 52px;
+  }
+}

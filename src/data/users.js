@@ -6,6 +6,7 @@ const initialUsers = [
     email: "admin@fbpeople.com",
     password: "admin123",
     role: "admin",
+    accountStatus: "active",
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ const initialUsers = [
     employeeCode: "NV001",
     password: "123456",
     role: "employee",
+    accountStatus: "active",
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ const initialUsers = [
     employeeCode: "NV002",
     password: "123456",
     role: "employee",
+    accountStatus: "active",
   },
 ];
 
@@ -30,7 +33,17 @@ export const getUsers = () => {
   const savedUsers = localStorage.getItem("users");
 
   if (savedUsers) {
-    return JSON.parse(savedUsers);
+    const users = JSON.parse(savedUsers);
+
+    // Bổ sung trạng thái cho tài khoản cũ chưa có trường này
+    const updatedUsers = users.map((user) => ({
+      ...user,
+      accountStatus: user.accountStatus || "active",
+    }));
+
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+    return updatedUsers;
   }
 
   // Nếu chưa có dữ liệu thì sử dụng tài khoản mẫu

@@ -17,28 +17,30 @@ const handleLogin = (e) => {
     return;
   }
 
-  const user = getUsers().find((u) => {
-    const account = username.trim().toLowerCase();
+  const account = username.trim().toLowerCase();
 
+  const user = getUsers().find((u) => {
     const accountMatches =
       u.email.toLowerCase() === account ||
       (u.employeeCode &&
         u.employeeCode.toLowerCase() === account);
 
-    return (
-      accountMatches &&
-      u.password === password &&
-      u.role === role
-    );
+    return accountMatches && u.role === role;
   });
 
-  if (!user) {
+  if (!user || user.password !== password) {
     alert("Tài khoản, mật khẩu hoặc loại tài khoản không chính xác!");
     return;
   }
 
-  const { password: hiddenPassword, ...safeUser } = user;
+  if (user.accountStatus === "locked") {
+    alert(
+      "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản lý cửa hàng!"
+    );
+    return;
+  }
 
+  const { password: hiddenPassword, ...safeUser } = user;
   onLogin(safeUser);
 };
 

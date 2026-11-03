@@ -286,10 +286,14 @@
 .employee-modal {
   width: 100%;
   max-width: 500px;
+  max-height: 85vh;
   padding: 28px;
   border-radius: 14px;
   background: #ffffff;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.18);
+
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .employee-modal-heading {
@@ -450,4 +454,22 @@
 
 .employee-action-menu .delete-action:hover {
   background: #fff0f0;
+}
+
+.employee-modal {
+  scrollbar-width: thin;
+  scrollbar-color: #b8c7ba transparent;
+}
+
+.employee-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.employee-modal::-webkit-scrollbar-thumb {
+  background: #b8c7ba;
+  border-radius: 10px;
+}
+
+.employee-modal::-webkit-scrollbar-track {
+  background: transparent;
 }

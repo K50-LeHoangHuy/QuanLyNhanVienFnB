@@ -8,7 +8,6 @@ import {
   MoreHorizontal,
   X,
   Pencil,
-  Trash2,
   UserPlus,
   UserCheck,
 } from "lucide-react";
@@ -22,78 +21,82 @@ function Employees() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
-  // Danh sách tài khoản
+
   const [users, setUsers] = useState(() => getUsers());
-  // Trạng thái tạo tài khoản
+
   const [showAccountForm, setShowAccountForm] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [accountPassword, setAccountPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
-  
-  const [employees, setEmployees] = useState(() => {
-  const savedEmployees = localStorage.getItem("employees");
 
-  return savedEmployees
-    ? JSON.parse(savedEmployees)
-    : [
-        {
+  const [employees, setEmployees] = useState(() => {
+    const savedEmployees = localStorage.getItem("employees");
+
+    return savedEmployees
+      ? JSON.parse(savedEmployees)
+      : [
+          {
             id: "NV001",
             name: "Nguyễn Văn An",
             position: "Quản lý",
             phone: "0901234567",
             email: "an@gmail.com",
             status: "Đang làm việc",
-        },
-        {
+          },
+          {
             id: "NV002",
             name: "Trần Thị Mai",
             position: "Thu ngân",
             phone: "0912345678",
             email: "mai@gmail.com",
             status: "Đang làm việc",
-        },
-        {
+          },
+          {
             id: "NV003",
             name: "Lê Hoàng Nam",
             position: "Pha chế",
             phone: "0923456789",
             email: "nam@gmail.com",
             status: "Nghỉ phép",
-        },
-        {
+          },
+          {
             id: "NV004",
             name: "Phạm Thị Lan",
             position: "Phục vụ",
             phone: "0934567890",
             email: "lan@gmail.com",
             status: "Đang làm việc",
-        },
-        {
+          },
+          {
             id: "NV005",
             name: "Hoàng Minh Đức",
             position: "Pha chế",
             phone: "0945678901",
             email: "duc@gmail.com",
             status: "Đã nghỉ việc",
-        },
-      ];
-});
+          },
+        ];
+  });
 
-    // Lưu danh sách nhân viên vào localStorage khi thay đổi
-    useEffect(() => {
-        localStorage.setItem("employees", JSON.stringify(employees));
-    }, [employees]);
+  // Lưu danh sách nhân viên
+  useEffect(() => {
+    localStorage.setItem("employees", JSON.stringify(employees));
+  }, [employees]);
 
-    useEffect(() => {
-        saveUsers(users);
-    }, [users]);
+  // Lưu danh sách tài khoản
+  useEffect(() => {
+    saveUsers(users);
+  }, [users]);
 
   const [formData, setFormData] = useState({
     name: "",
     position: "Phục vụ",
     phone: "",
     email: "",
+    employeeType: "",
+    hourlyWage: "",
+    hireDate: "",
+    leavingDate: "",
     status: "Đang làm việc",
   });
 
@@ -116,6 +119,10 @@ function Employees() {
       position: "Phục vụ",
       phone: "",
       email: "",
+      employeeType: "",
+      hourlyWage: "",
+      hireDate: "",
+      leavingDate: "",
       status: "Đang làm việc",
     });
 
@@ -131,6 +138,10 @@ function Employees() {
       position: employee.position,
       phone: employee.phone,
       email: employee.email,
+      employeeType: employee.employeeType || "",
+      hourlyWage: employee.hourlyWage || "",
+      hireDate: employee.hireDate || "",
+      leavingDate: employee.leavingDate || "",
       status: employee.status,
     });
 
@@ -139,136 +150,256 @@ function Employees() {
   };
 
   // Lưu nhân viên mới hoặc cập nhật nhân viên
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  
+const handleSubmit = (event) => {
+  event.preventDefault();
 
-    if (editingId) {
-      // Cập nhật nhân viên hiện tại
-      setEmployees(
-        employees.map((employee) =>
-          employee.id === editingId
-            ? { ...employee, ...formData }
-            : employee
-        )
-      );
-    } else {
-  // Tìm mã nhân viên chưa được sử dụng
-  let nextId = 1;
-  let newEmployeeId = "";
+  // Chuẩn hóa email và số điện thoại
+  const email = formData.email?.trim().toLowerCase();
+  const phone = formData.phone?.replace(/\s/g, "");
 
-  do {
-    newEmployeeId = `NV${String(nextId).padStart(3, "0")}`;
-    nextId++;
-  } while (
-    employees.some((employee) => employee.id === newEmployeeId) ||
-    users.some((user) => user.employeeCode === newEmployeeId)
+  // Kiểm tra email trùng với nhân viên khác
+  const duplicateEmail = employees.some(
+    (employee) =>
+      employee.id !== editingId &&
+      employee.email?.trim().toLowerCase() === email
   );
 
-  // Tạo nhân viên mới
-  const newEmployee = {
-    id: newEmployeeId,
-    ...formData,
-  };
-
-  setEmployees([...employees, newEmployee]);
-}
-
-    setShowForm(false);
-    setEditingId(null);
-  };
-
-// Xóa nhân viên và tài khoản đăng nhập liên quan
-const handleDeleteEmployee = (employee) => {
-  const confirmed = window.confirm(
-    `Bạn có chắc chắn muốn xóa nhân viên ${employee.name} (${employee.id}) không?`
+  // Kiểm tra số điện thoại trùng với nhân viên khác
+  const duplicatePhone = employees.some(
+    (employee) =>
+      employee.id !== editingId &&
+      employee.phone?.replace(/\s/g, "") === phone
   );
 
-  if (confirmed) {
-    // Xóa nhân viên khỏi danh sách
-    setEmployees(
-      employees.filter(
-        (item) => item.id !== employee.id
+  // Kiểm tra email đã được sử dụng làm tài khoản
+  // Không tính tài khoản thuộc chính nhân viên đang chỉnh sửa
+  const duplicateAccountEmail = users.some(
+    (user) =>
+      user.email?.trim().toLowerCase() === email &&
+      user.employeeCode !== editingId
+  );
+
+  if (duplicateEmail || duplicateAccountEmail) {
+    alert("Email này đã được sử dụng. Vui lòng nhập email khác!");
+    return;
+  }
+
+  if (duplicatePhone) {
+    alert("Số điện thoại này đã được sử dụng. Vui lòng nhập số khác!");
+    return;
+  }
+
+  // Nếu đang chỉnh sửa nhân viên
+  if (editingId) {
+    setEmployees((prevEmployees) =>
+      prevEmployees.map((employee) =>
+        employee.id === editingId
+          ? { ...employee, ...formData }
+          : employee
+      )
+    );
+  } else {
+    // Tự động tạo mã nhân viên
+    let nextId = 1;
+    let newEmployeeId = "";
+
+    do {
+      newEmployeeId = `NV${String(nextId).padStart(3, "0")}`;
+      nextId++;
+    } while (
+      employees.some((employee) => employee.id === newEmployeeId) ||
+      users.some((user) => user.employeeCode === newEmployeeId)
+    );
+
+    const newEmployee = {
+      id: newEmployeeId,
+      ...formData,
+    };
+
+    setEmployees((prevEmployees) => [
+      ...prevEmployees,
+      newEmployee,
+    ]);
+  }
+
+  setShowForm(false);
+  setEditingId(null);
+};
+
+
+  // Ghi nhận nhân viên nghỉ việc
+  const handleOffboardEmployee = (employee) => {
+    if (employee.status === "Đã nghỉ việc") {
+      alert("Nhân viên này đã được ghi nhận nghỉ việc!");
+      setActiveMenu(null);
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Bạn có chắc chắn muốn ghi nhận nhân viên ${employee.name} (${employee.id}) nghỉ việc không?`
+    );
+
+    if (!confirmed) {
+      setActiveMenu(null);
+      return;
+    }
+
+    const today = new Date();
+    const leavingDate = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0"),
+    ].join("-");
+
+    // Cập nhật hồ sơ nhân viên
+    setEmployees((prevEmployees) =>
+      prevEmployees.map((item) =>
+        item.id === employee.id
+          ? {
+              ...item,
+              status: "Đã nghỉ việc",
+              leavingDate: leavingDate,
+            }
+          : item
       )
     );
 
-    // Xóa tài khoản có mã nhân viên tương ứng
-    const updatedUsers = users.filter(
-      (user) => user.employeeCode !== employee.id
+    // Khóa tài khoản liên quan
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.employeeCode === employee.id
+          ? {
+              ...user,
+              accountStatus: "locked",
+            }
+          : user
+      )
+    );
+
+    setActiveMenu(null);
+
+    alert(
+      "Đã ghi nhận nghỉ việc và khóa tài khoản (nếu có)!"
+    );
+  };
+
+  // Mở biểu mẫu tạo tài khoản
+  const handleOpenAccountForm = (employee) => {
+    const existingAccount = users.find(
+      (user) => user.employeeCode === employee.id
+    );
+
+    if (existingAccount) {
+      alert("Nhân viên này đã có tài khoản!");
+      return;
+    }
+
+    if (employee.status === "Đã nghỉ việc") {
+      alert("Không thể tạo tài khoản cho nhân viên đã nghỉ việc!");
+      return;
+    }
+
+    setSelectedEmployee(employee);
+    setAccountPassword("");
+    setConfirmPassword("");
+    setActiveMenu(null);
+    setShowAccountForm(true);
+  };
+
+  // Tạo tài khoản nhân viên
+  const handleCreateAccount = (event) => {
+    event.preventDefault();
+
+    if (accountPassword.length < 6) {
+      alert("Mật khẩu phải có ít nhất 6 ký tự!");
+      return;
+    }
+
+    if (accountPassword !== confirmPassword) {
+      alert("Mật khẩu xác nhận không khớp!");
+      return;
+    }
+
+    const emailExists = users.some(
+      (user) =>
+        user.email.toLowerCase() ===
+        selectedEmployee.email.toLowerCase()
+    );
+
+    if (emailExists) {
+      alert("Email này đã được sử dụng!");
+      return;
+    }
+
+    const nextId =
+      Math.max(0, ...users.map((user) => user.id)) + 1;
+
+    const newUser = {
+      id: nextId,
+      name: selectedEmployee.name,
+      email: selectedEmployee.email,
+      employeeCode: selectedEmployee.id,
+      password: accountPassword,
+      role: "employee",
+      accountStatus: "active",
+    };
+
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+
+    setShowAccountForm(false);
+    setSelectedEmployee(null);
+
+    alert("Tạo tài khoản thành công!");
+  };
+
+  // Khóa hoặc mở khóa tài khoản
+  const handleToggleAccountStatus = (employee) => {
+    const account = users.find(
+      (user) => user.employeeCode === employee.id
+    );
+
+    if (!account) {
+      alert("Nhân viên này chưa có tài khoản!");
+      return;
+    }
+
+    if (employee.status === "Đã nghỉ việc") {
+      alert("Không thể mở khóa tài khoản của nhân viên đã nghỉ việc!");
+      return;
+    }
+
+    const isLocked = account.accountStatus === "locked";
+
+    const confirmed = window.confirm(
+      isLocked
+        ? `Bạn có muốn mở khóa tài khoản của ${employee.name} không?`
+        : `Bạn có muốn khóa tài khoản của ${employee.name} không?`
+    );
+
+    if (!confirmed) {
+      setActiveMenu(null);
+      return;
+    }
+
+    const updatedUsers = users.map((user) =>
+      user.employeeCode === employee.id
+        ? {
+            ...user,
+            accountStatus: isLocked ? "active" : "locked",
+          }
+        : user
     );
 
     setUsers(updatedUsers);
-  }
+    setActiveMenu(null);
 
-  setActiveMenu(null);
-};
-
-  // Mở biểu mẫu tạo tài khoản
-const handleOpenAccountForm = (employee) => {
-  const existingAccount = users.find(
-    (user) => user.employeeCode === employee.id
-  );
-
-  if (existingAccount) {
-    alert("Nhân viên này đã có tài khoản!");
-    return;
-  }
-
-  if (employee.status === "Đã nghỉ việc") {
-    alert("Không thể tạo tài khoản cho nhân viên đã nghỉ việc!");
-    return;
-  }
-
-  setSelectedEmployee(employee);
-  setAccountPassword("");
-  setConfirmPassword("");
-  setActiveMenu(null);
-  setShowAccountForm(true);
-};
-
-// Tạo tài khoản nhân viên
-const handleCreateAccount = (event) => {
-  event.preventDefault();
-
-  if (accountPassword.length < 6) {
-    alert("Mật khẩu phải có ít nhất 6 ký tự!");
-    return;
-  }
-
-  if (accountPassword !== confirmPassword) {
-    alert("Mật khẩu xác nhận không khớp!");
-    return;
-  }
-
-  const emailExists = users.some(
-    (user) =>
-      user.email.toLowerCase() ===
-      selectedEmployee.email.toLowerCase()
-  );
-
-  if (emailExists) {
-    alert("Email này đã được sử dụng!");
-    return;
-  }
-
-  const nextId =
-    Math.max(0, ...users.map((user) => user.id)) + 1;
-
-  const newUser = {
-    id: nextId,
-    name: selectedEmployee.name,
-    email: selectedEmployee.email,
-    employeeCode: selectedEmployee.id,
-    password: accountPassword,
-    role: "employee",
+    alert(
+      isLocked
+        ? "Đã mở khóa tài khoản thành công!"
+        : "Đã khóa tài khoản thành công!"
+    );
   };
-
-  setUsers([...users, newUser]);
-
-  setShowAccountForm(false);
-  setSelectedEmployee(null);
-
-  alert("Tạo tài khoản thành công!");
-};
 
   // Tìm kiếm và lọc nhân viên
   const filteredEmployees = employees.filter((employee) => {
@@ -393,8 +524,9 @@ const handleCreateAccount = (event) => {
                 <th>Mã nhân viên</th>
                 <th>Họ và tên</th>
                 <th>Vị trí</th>
+                <th>Loại nhân viên</th>
+                <th>Lương theo giờ</th>
                 <th>Số điện thoại</th>
-                <th>Email</th>
                 <th>Trạng thái</th>
                 <th></th>
               </tr>
@@ -402,90 +534,119 @@ const handleCreateAccount = (event) => {
 
             <tbody>
               {filteredEmployees.length > 0 ? (
-                filteredEmployees.map((employee) => (
-                  <tr key={employee.id}>
-                    <td className="employee-id">{employee.id}</td>
-                    <td className="employee-name">{employee.name}</td>
-                    <td>{employee.position}</td>
-                    <td>{employee.phone}</td>
-                    <td>{employee.email}</td>
+                filteredEmployees.map((employee) => {
+                  const employeeAccount = users.find(
+                    (user) => user.employeeCode === employee.id
+                  );
 
-                    <td>
-                      <span
-                        className={`employee-status ${
-                          employee.status === "Đang làm việc"
-                            ? "working"
-                            : employee.status === "Nghỉ phép"
-                              ? "leave"
-                              : "inactive"
-                        }`}
-                      >
-                        {employee.status}
-                      </span>
-                    </td>
+                  return (
+                    <tr key={employee.id}>
+                      <td className="employee-id">{employee.id}</td>
+                      <td className="employee-name">{employee.name}</td>
+                      <td>{employee.position}</td>
+                      <td>{employee.employeeType || "—"}</td>
+                      <td>
+                        {employee.hourlyWage
+                          ? `${Number(employee.hourlyWage).toLocaleString("vi-VN")} đ`
+                          : "—"}
+                      </td>
+                      <td>{employee.phone}</td>
 
-                    <td className="employee-action-cell">
-                      <button
-                        className="employee-more-button"
-                        type="button"
-                        title="Thao tác"
-                        onClick={() =>
-                          setActiveMenu(
-                            activeMenu === employee.id
-                              ? null
-                              : employee.id
-                          )
-                        }
-                      >
-                        <MoreHorizontal size={20} />
-                      </button>
+                      <td>
+                        <span
+                          className={`employee-status ${
+                            employee.status === "Đang làm việc"
+                              ? "working"
+                              : employee.status === "Nghỉ phép"
+                                ? "leave"
+                                : "inactive"
+                          }`}
+                        >
+                          {employee.status}
+                        </span>
+                      </td>
 
-                      {activeMenu === employee.id && (
-                        <div className="employee-action-menu">
-                        {!users.some(
-                            (user) => user.employeeCode === employee.id
-                            ) ? (
-                            <button
+                      <td className="employee-action-cell">
+                        <button
+                          className="employee-more-button"
+                          type="button"
+                          title="Thao tác"
+                          onClick={() =>
+                            setActiveMenu(
+                              activeMenu === employee.id
+                                ? null
+                                : employee.id
+                            )
+                          }
+                        >
+                          <MoreHorizontal size={20} />
+                        </button>
+
+                        {activeMenu === employee.id && (
+                          <div className="employee-action-menu">
+                            {!employeeAccount ? (
+                              <button
                                 type="button"
-                                onClick={() => handleOpenAccountForm(employee)}
-                            >
+                                onClick={() =>
+                                  handleOpenAccountForm(employee)
+                                }
+                              >
                                 <UserPlus size={16} />
                                 Tạo tài khoản
-                            </button>
+                              </button>
                             ) : (
-                            <button type="button" disabled>
+                              <button type="button" disabled>
                                 <UserCheck size={16} />
                                 Đã có tài khoản
-                            </button>
-                        )}
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleEditEmployee(employee)
-                            }
-                          >
-                            <Pencil size={16} />
-                            Chỉnh sửa
-                          </button>
+                              </button>
+                            )}
 
-                          <button
-                            type="button"
-                            className="delete-action"
-                            onClick={() =>
-                              handleDeleteEmployee(employee)
-                            }
-                          >
-                            <Trash2 size={16} />
-                            Xóa nhân viên
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                            {employeeAccount && (
+                              <button
+                                type="button"
+                                disabled={employee.status === "Đã nghỉ việc"}
+                                onClick={() =>
+                                  handleToggleAccountStatus(employee)
+                                }
+                              >
+                                <UserCheck size={16} />
+                                {employeeAccount.accountStatus === "locked"
+                                  ? "Mở khóa tài khoản"
+                                  : "Khóa tài khoản"}
+                              </button>
+                            )}
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleEditEmployee(employee)
+                              }
+                            >
+                              <Pencil size={16} />
+                              Chỉnh sửa
+                            </button>
+
+                            {employee.status !== "Đã nghỉ việc" && (
+                              <button
+                                type="button"
+                                className="delete-action"
+                                onClick={() =>
+                                  handleOffboardEmployee(employee)
+                                }
+                              >
+                                <UserCheck size={16} />
+                                Ghi nhận nghỉ việc
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
-                  <td colSpan="7" className="employee-empty">
+                  <td colSpan="8" className="employee-empty">
                     Không tìm thấy nhân viên phù hợp.
                   </td>
                 </tr>
@@ -562,6 +723,56 @@ const handleCreateAccount = (event) => {
               </div>
 
               <div className="employee-form-group">
+                <label>Loại nhân viên</label>
+                <select
+                  name="employeeType"
+                  value={formData.employeeType}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Chọn loại nhân viên</option>
+                  <option value="Toàn thời gian">Toàn thời gian</option>
+                  <option value="Bán thời gian">Bán thời gian</option>
+                </select>
+              </div>
+
+              <div className="employee-form-group">
+                <label>Lương theo giờ (VNĐ)</label>
+                <input
+                  type="number"
+                  name="hourlyWage"
+                  placeholder="Nhập mức lương theo giờ"
+                  value={formData.hourlyWage}
+                  onChange={handleInputChange}
+                  min="0"
+                  required
+                />
+              </div>
+
+              <div className="employee-form-group">
+                <label>Ngày vào làm</label>
+                <input
+                  type="date"
+                  name="hireDate"
+                  value={formData.hireDate}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              {editingId && (
+                <div className="employee-form-group">
+                  <label>Ngày nghỉ việc</label>
+                  <input
+                    type="date"
+                    name="leavingDate"
+                    value={formData.leavingDate}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              )}
+
+              <div className="employee-form-group">
                 <label>Email</label>
                 <input
                   type="email"
@@ -610,103 +821,98 @@ const handleCreateAccount = (event) => {
       )}
 
       {/* Biểu mẫu tạo tài khoản */}
-{showAccountForm && selectedEmployee && (
-  <div className="employee-modal-overlay">
-    <div className="employee-modal">
+      {showAccountForm && selectedEmployee && (
+        <div className="employee-modal-overlay">
+          <div className="employee-modal">
+            <div className="employee-modal-heading">
+              <div>
+                <h2>Tạo tài khoản nhân viên</h2>
+                <p>Cấp tài khoản đăng nhập cho nhân viên.</p>
+              </div>
 
-      <div className="employee-modal-heading">
-        <div>
-          <h2>Tạo tài khoản nhân viên</h2>
-          <p>
-            Cấp tài khoản đăng nhập cho nhân viên.
-          </p>
+              <button
+                type="button"
+                className="employee-modal-close"
+                onClick={() => setShowAccountForm(false)}
+              >
+                <X size={21} />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateAccount}>
+              <div className="employee-form-group">
+                <label>Mã nhân viên</label>
+                <input
+                  type="text"
+                  value={selectedEmployee.id}
+                  disabled
+                />
+              </div>
+
+              <div className="employee-form-group">
+                <label>Họ và tên</label>
+                <input
+                  type="text"
+                  value={selectedEmployee.name}
+                  disabled
+                />
+              </div>
+
+              <div className="employee-form-group">
+                <label>Email đăng nhập</label>
+                <input
+                  type="email"
+                  value={selectedEmployee.email}
+                  disabled
+                />
+              </div>
+
+              <div className="employee-form-group">
+                <label>Mật khẩu ban đầu</label>
+                <input
+                  type="password"
+                  placeholder="Nhập mật khẩu (ít nhất 6 ký tự)"
+                  value={accountPassword}
+                  onChange={(event) =>
+                    setAccountPassword(event.target.value)
+                  }
+                  required
+                />
+              </div>
+
+              <div className="employee-form-group">
+                <label>Xác nhận mật khẩu</label>
+                <input
+                  type="password"
+                  placeholder="Nhập lại mật khẩu"
+                  value={confirmPassword}
+                  onChange={(event) =>
+                    setConfirmPassword(event.target.value)
+                  }
+                  required
+                />
+              </div>
+
+              <div className="employee-modal-actions">
+                <button
+                  type="button"
+                  className="employee-cancel-button"
+                  onClick={() => setShowAccountForm(false)}
+                >
+                  Hủy
+                </button>
+
+                <button
+                  type="submit"
+                  className="employee-save-button"
+                >
+                  Tạo tài khoản
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-
-        <button
-          type="button"
-          className="employee-modal-close"
-          onClick={() => setShowAccountForm(false)}
-        >
-          <X size={21} />
-        </button>
-      </div>
-
-      <form onSubmit={handleCreateAccount}>
-
-        <div className="employee-form-group">
-          <label>Mã nhân viên</label>
-          <input
-            type="text"
-            value={selectedEmployee.id}
-            disabled
-          />
-        </div>
-
-        <div className="employee-form-group">
-          <label>Họ và tên</label>
-          <input
-            type="text"
-            value={selectedEmployee.name}
-            disabled
-          />
-        </div>
-
-        <div className="employee-form-group">
-          <label>Email đăng nhập</label>
-          <input
-            type="email"
-            value={selectedEmployee.email}
-            disabled
-          />
-        </div>
-
-        <div className="employee-form-group">
-          <label>Mật khẩu ban đầu</label>
-          <input
-            type="password"
-            placeholder="Nhập mật khẩu (ít nhất 6 ký tự)"
-            value={accountPassword}
-            onChange={(event) =>
-              setAccountPassword(event.target.value)
-            }
-            required
-          />
-        </div>
-
-        <div className="employee-form-group">
-          <label>Xác nhận mật khẩu</label>
-          <input
-            type="password"
-            placeholder="Nhập lại mật khẩu"
-            value={confirmPassword}
-            onChange={(event) =>
-              setConfirmPassword(event.target.value)
-            }
-            required
-          />
-        </div>
-
-        <div className="employee-modal-actions">
-          <button
-            type="button"
-            className="employee-cancel-button"
-            onClick={() => setShowAccountForm(false)}
-          >
-            Hủy
-          </button>
-
-          <button
-            type="submit"
-            className="employee-save-button"
-          >
-            Tạo tài khoản
-          </button>
-        </div>
-
-      </form>
-    </div>
-  </div>
-)}  
+      )}
     </div>
   );
 }

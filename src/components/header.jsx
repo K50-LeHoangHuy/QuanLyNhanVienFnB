@@ -1,7 +1,11 @@
 
 import { Search, Bell, ChevronDown } from "lucide-react";
 
-function Header({ currentUser, onLogout }) {
+function Header({
+  currentUser,
+  onLogout,
+  roleLabel = "Quản trị viên",
+}) {
   return (
     <header className="admin-header">
       <div className="header-search">
@@ -25,7 +29,7 @@ function Header({ currentUser, onLogout }) {
 
           <div className="profile-info">
             <strong>{currentUser?.name || "Admin"}</strong>
-            <span>Quản trị viên</span>
+            <span>{roleLabel}</span>
           </div>
 
           <button
